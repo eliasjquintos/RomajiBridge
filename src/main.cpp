@@ -1,5 +1,11 @@
+//guarded because this header isn't accessible on linux
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+
 #include <fstream>
 #include <map>
+#include <codecvt>
 #include "Word.h"
 #include "json.hpp"
 using json = nlohmann::json;
@@ -21,6 +27,15 @@ int main()
         return 1;
     }
     json j = json::parse(file);
+
+    /*
+    The gibberish we were getting were OEM characters. 
+    These two lines below tell the system to interpret them as UTF-8.
+    */
+    #ifdef _WIN32
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+    #endif
 
     /*
     The size of the "words" tag ended up being 213730
