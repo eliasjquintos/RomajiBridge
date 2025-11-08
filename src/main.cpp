@@ -15,12 +15,7 @@ string getRomaji(const string& kana);
 
 int main()
 {
-    /*
-    Creating a parsable json object from the data path.
-    This can be put into a function later
-    */
-
-    ifstream file("data/jmdict-all-3.6.1+20251013122507.json/jmdict-all-3.6.1.json", ifstream::binary);
+    ifstream file("data/jmdict-all-3.6.1+20251013122507.json/jmdict-eng-3.6.1.json", ifstream::binary);
     if (!file.is_open())
     {
         cerr << "Couldn't open file for some reason..." << endl;
@@ -29,8 +24,8 @@ int main()
     json j = json::parse(file);
 
     /*
-    The gibberish we were getting were OEM characters. 
-    These two lines below tell the system to interpret them as UTF-8.
+    The gibberish nonsense characters were OEM characters. 
+    The two lines below tell windows to interpret hiragana as UTF-8.
     */
     #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
@@ -38,15 +33,15 @@ int main()
     #endif
 
     /*
-    The size of the "words" tag ended up being 213730
-    //cout << j["words"].size() << " entries in total" << endl;
+    The size of the "words" tag in the "all" file: 213730
+    Entries in "eng" file: 213984
+    cout << j["words"].size() << " entries in total\n" << endl;
     */
 
+
     /*
-    I wanted to count how many words were purely in hiragana
-    I think our project would be much too complicated looking up katakana,
-    kanji, and small characters like っ,ゃ,ゅ,ょ. Let's not commit
-    seppuku just yet.
+    Getting words purely in hiragana first. Excluding katakana,
+    kanji, and small characters like っ,ゃ,ゅ,ょ.
     */
     int viableWordCount = 0;
     
@@ -54,7 +49,7 @@ int main()
     Creates and prints the word object 
     for each entry in the json file
     */
-    for (int i = 0; i < 213730; i++)
+    for (int i = 0; i < 213984; i++)
     {
         string kana = j["words"][i]["kana"][0]["text"];
         string def = j["words"][i]["sense"][0]["gloss"][0]["text"];
@@ -68,31 +63,34 @@ int main()
     }
 
     /*
-    Purely hiragana still gives us 104602 entries to work with.
+    Purely hiragana still gives us 104602 entries ("all" file) to work with.
+    "eng" file: 104650
     */
     cout << "Total words accounted for: " << viableWordCount << endl;
     file.close();
     return 0;    
 }
 
+//UTF-8 input
 string getRomaji(const string& kana)
 {
-    map<string, string> kanaToRomaji = {
-        {"あ", "a"}, {"い", "i"}, {"う", "u"}, {"え", "e"}, {"お", "o"},
-        {"か", "ka"}, {"き", "ki"}, {"く", "ku"}, {"け", "ke"}, {"こ", "ko"},
-        {"が", "ga"}, {"ぎ", "gi"}, {"ぐ", "gu"}, {"げ", "ge"}, {"ご", "go"},
-        {"さ", "sa"}, {"し", "shi"}, {"す", "su"}, {"せ", "se"}, {"そ", "so"},
-        {"ざ", "za"}, {"じ", "ji"}, {"ず", "zu"}, {"ぜ", "ze"}, {"ぞ", "zo"},
-        {"た", "ta"}, {"ち", "chi"}, {"つ", "tsu"}, {"て", "te"}, {"と", "to"},
-        {"だ", "da"}, {"ぢ", "ji"}, {"づ", "zu"}, {"で", "de"}, {"ど", "do"},
-        {"な", "na"}, {"に", "ni"}, {"ぬ", "nu"}, {"ね", "ne"}, {"の", "no"},
-        {"は", "ha"}, {"ひ", "hi"}, {"ふ", "fu"}, {"へ", "he"}, {"ほ", "ho"},
-        {"ば", "ba"}, {"び", "bi"}, {"ぶ", "bu"}, {"べ", "be"}, {"ぼ", "bo"},
-        {"ぱ", "pa"}, {"ぴ", "pi"}, {"ぷ", "pu"}, {"ぺ", "pe"}, {"ぽ", "po"},
-        {"ま", "ma"}, {"み", "mi"}, {"む", "mu"}, {"め", "me"}, {"も", "mo"},
-        {"や", "ya"}, {"ゆ", "yu"}, {"よ", "yo"},
-        {"ら", "ra"}, {"り", "ri"}, {"る", "ru"}, {"れ", "re"}, {"ろ", "ro"},
-        {"わ", "wa"}, {"を", "wo"}, {"ん", "n"}
+    map<wchar_t, string> kanaToRomaji = 
+    {
+        {L'あ', "a"}, {L'い', "i"}, {L'う', "u"}, {L'え', "e"}, {L'お', "o"},
+        {L'か', "ka"}, {L'き', "ki"}, {L'く', "ku"}, {L'け', "ke"}, {L'こ', "ko"},
+        {L'が', "ga"}, {L'ぎ', "gi"}, {L'ぐ', "gu"}, {L'げ', "ge"}, {L'ご', "go"},
+        {L'さ', "sa"}, {L'し', "shi"}, {L'す', "su"}, {L'せ', "se"}, {L'そ', "so"},
+        {L'ざ', "za"}, {L'じ', "ji"}, {L'ず', "zu"}, {L'ぜ', "ze"}, {L'ぞ', "zo"},
+        {L'た', "ta"}, {L'ち', "chi"}, {L'つ', "tsu"}, {L'て', "te"}, {L'と', "to"},
+        {L'だ', "da"}, {L'ぢ', "ji"}, {L'づ', "zu"}, {L'で', "de"}, {L'ど', "do"},
+        {L'な', "na"}, {L'に', "ni"}, {L'ぬ', "nu"}, {L'ね', "ne"}, {L'の', "no"},
+        {L'は', "ha"}, {L'ひ', "hi"}, {L'ふ', "fu"}, {L'へ', "he"}, {L'ほ', "ho"},
+        {L'ば', "ba"}, {L'び', "bi"}, {L'ぶ', "bu"}, {L'べ', "be"}, {L'ぼ', "bo"},
+        {L'ぱ', "pa"}, {L'ぴ', "pi"}, {L'ぷ', "pu"}, {L'ぺ', "pe"}, {L'ぽ', "po"},
+        {L'ま', "ma"}, {L'み', "mi"}, {L'む', "mu"}, {L'め', "me"}, {L'も', "mo"},
+        {L'や', "ya"}, {L'ゆ', "yu"}, {L'よ', "yo"},
+        {L'ら', "ra"}, {L'り', "ri"}, {L'る', "ru"}, {L'れ', "re"}, {L'ろ', "ro"},
+        {L'わ', "wa"}, {L'を', "wo"}, {L'ん', "n"}
     };
 
     string res = "";
@@ -103,18 +101,18 @@ string getRomaji(const string& kana)
     */
     std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
     std::wstring wideKana = converter.from_bytes(kana);
-
+    
     for (wchar_t wc : wideKana)
     {
-        string k = converter.to_bytes(wc);
-        if (kanaToRomaji.find(k) != kanaToRomaji.end())
+        if (kanaToRomaji.find(wc) != kanaToRomaji.end())
         {
-            res += kanaToRomaji[k];
+            res += kanaToRomaji[wc];
         }
         else
         {
             return "";
         }
     }
+    
     return res;
 }
