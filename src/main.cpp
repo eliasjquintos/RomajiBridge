@@ -15,7 +15,7 @@ string getRomaji(const string& kana);
 
 int main()
 {
-    ifstream file("data/jmdict-all-3.6.1+20251013122507.json/jmdict-eng-3.6.1.json", ifstream::binary);
+    ifstream file("data/jmdict-eng-3.6.1.json", ifstream::binary);
     if (!file.is_open())
     {
         cerr << "Couldn't open file for some reason..." << endl;
@@ -74,23 +74,23 @@ int main()
 //UTF-8 input
 string getRomaji(const string& kana)
 {
-    map<wchar_t, string> kanaToRomaji = 
+    map<char32_t, string> kanaToRomaji = 
     {
-        {L'あ', "a"}, {L'い', "i"}, {L'う', "u"}, {L'え', "e"}, {L'お', "o"},
-        {L'か', "ka"}, {L'き', "ki"}, {L'く', "ku"}, {L'け', "ke"}, {L'こ', "ko"},
-        {L'が', "ga"}, {L'ぎ', "gi"}, {L'ぐ', "gu"}, {L'げ', "ge"}, {L'ご', "go"},
-        {L'さ', "sa"}, {L'し', "shi"}, {L'す', "su"}, {L'せ', "se"}, {L'そ', "so"},
-        {L'ざ', "za"}, {L'じ', "ji"}, {L'ず', "zu"}, {L'ぜ', "ze"}, {L'ぞ', "zo"},
-        {L'た', "ta"}, {L'ち', "chi"}, {L'つ', "tsu"}, {L'て', "te"}, {L'と', "to"},
-        {L'だ', "da"}, {L'ぢ', "ji"}, {L'づ', "zu"}, {L'で', "de"}, {L'ど', "do"},
-        {L'な', "na"}, {L'に', "ni"}, {L'ぬ', "nu"}, {L'ね', "ne"}, {L'の', "no"},
-        {L'は', "ha"}, {L'ひ', "hi"}, {L'ふ', "fu"}, {L'へ', "he"}, {L'ほ', "ho"},
-        {L'ば', "ba"}, {L'び', "bi"}, {L'ぶ', "bu"}, {L'べ', "be"}, {L'ぼ', "bo"},
-        {L'ぱ', "pa"}, {L'ぴ', "pi"}, {L'ぷ', "pu"}, {L'ぺ', "pe"}, {L'ぽ', "po"},
-        {L'ま', "ma"}, {L'み', "mi"}, {L'む', "mu"}, {L'め', "me"}, {L'も', "mo"},
-        {L'や', "ya"}, {L'ゆ', "yu"}, {L'よ', "yo"},
-        {L'ら', "ra"}, {L'り', "ri"}, {L'る', "ru"}, {L'れ', "re"}, {L'ろ', "ro"},
-        {L'わ', "wa"}, {L'を', "wo"}, {L'ん', "n"}
+        {U'あ', "a"}, {U'い', "i"}, {U'う', "u"}, {U'え', "e"}, {U'お', "o"},
+        {U'か', "ka"}, {U'き', "ki"}, {U'く', "ku"}, {U'け', "ke"}, {U'こ', "ko"},
+        {U'が', "ga"}, {U'ぎ', "gi"}, {U'ぐ', "gu"}, {U'げ', "ge"}, {U'ご', "go"},
+        {U'さ', "sa"}, {U'し', "shi"}, {U'す', "su"}, {U'せ', "se"}, {U'そ', "so"},
+        {U'ざ', "za"}, {U'じ', "ji"}, {U'ず', "zu"}, {U'ぜ', "ze"}, {U'ぞ', "zo"},
+        {U'た', "ta"}, {U'ち', "chi"}, {U'つ', "tsu"}, {U'て', "te"}, {U'と', "to"},
+        {U'だ', "da"}, {U'ぢ', "ji"}, {U'づ', "zu"}, {U'で', "de"}, {U'ど', "do"},
+        {U'な', "na"}, {U'に', "ni"}, {U'ぬ', "nu"}, {U'ね', "ne"}, {U'の', "no"},
+        {U'は', "ha"}, {U'ひ', "hi"}, {U'ふ', "fu"}, {U'へ', "he"}, {U'ほ', "ho"},
+        {U'ば', "ba"}, {U'び', "bi"}, {U'ぶ', "bu"}, {U'べ', "be"}, {U'ぼ', "bo"},
+        {U'ぱ', "pa"}, {U'ぴ', "pi"}, {U'ぷ', "pu"}, {U'ぺ', "pe"}, {U'ぽ', "po"},
+        {U'ま', "ma"}, {U'み', "mi"}, {U'む', "mu"}, {U'め', "me"}, {U'も', "mo"},
+        {U'や', "ya"}, {U'ゆ', "yu"}, {U'よ', "yo"},
+        {U'ら', "ra"}, {U'り', "ri"}, {U'る', "ru"}, {U'れ', "re"}, {U'ろ', "ro"},
+        {U'わ', "wa"}, {U'を', "wo"}, {U'ん', "n"}
     };
 
     string res = "";
@@ -99,14 +99,14 @@ string getRomaji(const string& kana)
     converts the UTF-8 hiragana string to a wide string
     so the for loop can iterate through it properly
     */
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-    std::wstring wideKana = converter.from_bytes(kana);
+    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
+    std::u32string wideKana = converter.from_bytes(kana);
     
-    for (wchar_t wc : wideKana)
+    for (char32_t ch : wideKana)
     {
-        if (kanaToRomaji.find(wc) != kanaToRomaji.end())
+        if (kanaToRomaji.find(ch) != kanaToRomaji.end())
         {
-            res += kanaToRomaji[wc];
+            res += kanaToRomaji[ch];
         }
         else
         {
