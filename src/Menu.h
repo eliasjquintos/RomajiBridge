@@ -3,5 +3,5 @@
 #include <string>
 using std::string;
 
-void ExactSearch(Trie& trie, const string& input);
-void PrefixSearch(Trie& trie, const string& input);
+void ExactTrieSearch(Trie& trie, const string& input);
+void PrefixTrieSearch(Trie& trie, const string& input);
