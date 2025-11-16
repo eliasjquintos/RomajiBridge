@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace std;
 
-void ExactSearch(Trie& trie, const string& input)
+void ExactTrieSearch(Trie& trie, const string& input)
 {
 	vector<Word*> res = trie.Search(input);
 
@@ -21,7 +21,7 @@ void ExactSearch(Trie& trie, const string& input)
 	}
 }
 
-void PrefixSearch(Trie& trie, const string& input)
+void PrefixTrieSearch(Trie& trie, const string& input)
 {
 	vector<Word*> res = trie.PrefixSearch(input);
 
