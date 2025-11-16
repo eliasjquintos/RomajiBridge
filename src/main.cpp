@@ -5,6 +5,8 @@
 
 #include <fstream>
 #include <map>
+#include <string>
+#include <iostream>
 #include <codecvt>
 #include "Word.h"
 #include "json.hpp"
