@@ -9,71 +9,91 @@
 #include <iostream>
 #include <codecvt>
 #include "Word.h"
-#include "json.hpp"
-using json = nlohmann::json;
+#include "Trie.h"
+//#include "json.hpp"
+//TODO Get words into csv file
+//Insert words into trie
+//include Menu
+//search trie
+
+//using json = nlohmann::json;
 using namespace std;
 
 string getRomaji(const string& kana);
 
 int main()
 {
-    ifstream file("data/jmdict-eng-3.6.1.json", ifstream::binary);
-    if (!file.is_open())
-    {
-        cerr << "Couldn't open file for some reason..." << endl;
-        return 1;
-    }
-    json j = json::parse(file);
-
-    /*
-    The gibberish nonsense characters were OEM characters. 
-    The two lines below tell windows to interpret hiragana as UTF-8.
-    */
+    //Makes OEM Hiragana readable to Windows Powershell (UTF-8).
     #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
     #endif
 
     /*
-    The size of the "words" tag in the "all" file: 213730
-    Entries in "eng" file: 213984
-    cout << j["words"].size() << " entries in total\n" << endl;
+    Excluding katakana, kanji, and small characters like っ,ゃ,ゅ,ょ
+    gives 104650 entries to work with.
     */
-
-
-    /*
-    Getting words purely in hiragana first. Excluding katakana,
-    kanji, and small characters like っ,ゃ,ゅ,ょ.
-    */
-    int viableWordCount = 0;
-    
-    /*
-    Creates and prints the word object 
-    for each entry in the json file
-    */
-    for (int i = 0; i < 213984; i++)
+    ifstream dict("data/dict.csv");
+    if (!dict.is_open())
     {
-        string kana = j["words"][i]["kana"][0]["text"];
-        string def = j["words"][i]["sense"][0]["gloss"][0]["text"];
-        string romaji = getRomaji(kana);
-        Word w(kana, def, romaji);
-        if (w.getRomaji() != "")
-        {
-            w.displayWord();
-            viableWordCount++;
-        }
+        cerr << "Couldn't retrieve dictionary file" << endl;
+        return -1;
     }
 
-    /*
-    Purely hiragana still gives us 104602 entries ("all" file) to work with.
-    "eng" file: 104650
-    */
-    cout << "Total words accounted for: " << viableWordCount << endl;
-    file.close();
+    //make trie from csv
+    Trie trie;
+
+    //TODO: Make searchable from the menu
+    bool loading = true;
+    bool searching = true;
+    while (searching)
+    {
+        if (loading)
+        {
+            while (!dict.eof())
+            {
+                string kana, def, romaji;
+                getline(dict, kana, ',');
+                getline(dict, def, ',');
+                getline(dict, romaji);
+                Word* w = new Word(kana, def, romaji);
+                trie.Insert(w);
+            }
+            loading = false;
+            dict.close();
+            cout << "Dictionary loaded successfully!" << endl;  
+        }
+        cout << "Enter your search or press q to quit: " << endl;
+        string search;
+        getline(cin, search);
+        if (search == "q")
+        {
+            searching = false;
+        }
+        else
+        {
+            vector<Word*> res = trie.PrefixSearch(search);
+            if (res.size() == 0)
+            {
+                cout << "No results found" <<endl;
+            }
+            else
+            {
+                for (Word* w : res)
+                {
+                    w->displayWord();
+                }
+            }
+        }
+    }
     return 0;    
+    
+
+
 }
 
 //UTF-8 input
+/*
 string getRomaji(const string& kana)
 {
     map<char32_t, string> kanaToRomaji = 
@@ -97,10 +117,9 @@ string getRomaji(const string& kana)
 
     string res = "";
 
-    /*
-    converts the UTF-8 hiragana string to a wide string
-    so the for loop can iterate through it properly
-    */
+    //converts the UTF-8 hiragana string to a wide string
+    //so the for loop can iterate through it properly
+    
     std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
     std::u32string wideKana = converter.from_bytes(kana);
     
@@ -118,3 +137,31 @@ string getRomaji(const string& kana)
     
     return res;
 }
+*/
+
+/*
+Included for reference only
+original code to get the csv from json:
+ifstream file("data/jmdict-eng-3.6.1.json", ifstream::binary);
+if (!file.is_open())
+{
+    cerr << "Couldn't open file for some reason..." << endl;
+    return 1;
+}
+json j = json::parse(file);
+file.close();
+
+original code to parse json
+for (int i = 0; i < 213984; i++)
+{
+    string kana = j["words"][i]["kana"][0]["text"];
+    string def = j["words"][i]["sense"][0]["gloss"][0]["text"];
+    string romaji = getRomaji(kana);
+    Word w(kana, def, romaji);
+    if (w.getRomaji() != "")
+    {
+        dict << w.getKana() << "," << w.getEnDef() << "," << w.getRomaji() << "\n";
+        viableWordCount++;
+    }
+}
+*/
