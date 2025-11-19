@@ -9,6 +9,7 @@
 #include <iostream>
 #include <codecvt>
 #include "Word.h"
+#include "Menu.h"
 #include "Trie.h"
 //#include "json.hpp"
 //TODO Get words into csv file
@@ -19,7 +20,7 @@
 //using json = nlohmann::json;
 using namespace std;
 
-string getRomaji(const string& kana);
+// string getRomaji(const string& kana);
 
 int main()
 {
@@ -63,33 +64,25 @@ int main()
             dict.close();
             cout << "Dictionary loaded successfully!" << endl;  
         }
-        cout << "Enter your search or press q to quit: " << endl;
+
+        cout << "Enter your search or enter q to quit: " << endl;
         string search;
         getline(cin, search);
-        if (search == "q")
+        if (search.empty())
+        {
+            cout << "Input cannot be empty. Please enter a valid romaji string." << endl;
+            continue;
+        }
+        else if (search == "q")
         {
             searching = false;
         }
         else
         {
-            vector<Word*> res = trie.PrefixSearch(search);
-            if (res.size() == 0)
-            {
-                cout << "No results found" <<endl;
-            }
-            else
-            {
-                for (Word* w : res)
-                {
-                    w->displayWord();
-                }
-            }
+            PrefixTrieSearch(trie, search);
         }
     }
     return 0;    
-    
-
-
 }
 
 //UTF-8 input
