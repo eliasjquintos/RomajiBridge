@@ -16,6 +16,6 @@ public:
     string getEnDef() const { return enDef; }
     string getRomaji() const { return romaji; }
     void displayWord() {
-        cout << "Kana: " << getKana() << ", Romaji: " << getRomaji() << ", Definition: " << getEnDef() << endl;
+        cout << "Kana: " << getKana() << ", Romaji: " << getRomaji() <<  endl << endl << "Definition: " << getEnDef() << endl;
     }
 };
