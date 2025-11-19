@@ -18,6 +18,7 @@ void ExactTrieSearch(Trie& trie, const string& input)
 	{
 		cout << i << ") ";
 		w->displayWord();
+		cout << "------------------------------------------------------------" << endl;
 		i++;
 	}
 }
@@ -37,6 +38,7 @@ void PrefixTrieSearch(Trie& trie, const string& input)
 	{
 		cout << i << ") ";
 		w->displayWord();
+		cout << "------------------------------------------------------------" << endl;
 		i++;
 	}
 }
