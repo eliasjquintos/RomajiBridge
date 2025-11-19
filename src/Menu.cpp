@@ -13,6 +13,8 @@ void ExactTrieSearch(Trie& trie, const string& input)
 		return;
 	}
 
+	cout << "------------------------------------------------------------" << endl;
+
 	int i = 1;
 	for (Word* w : res)
 	{
@@ -32,6 +34,8 @@ void PrefixTrieSearch(Trie& trie, const string& input)
 		cout << "No words found with this prefix" << endl;
 		return;
 	}
+
+	cout << "------------------------------------------------------------" << endl;
 
 	int i = 1;
 	for (Word* w : res)
