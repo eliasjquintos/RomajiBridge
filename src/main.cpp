@@ -31,8 +31,8 @@ int main()
     #endif
 
     /*
-    Excluding katakana, kanji, and small characters like っ,ゃ,ゅ,ょ
-    gives 104650 entries to work with.
+    Excluding kanji, and small characters like っ,ゃ,ゅ,ょ
+    gives 123095 entries to work with.
     */
     ifstream dict("data/dict.csv");
     if (!dict.is_open())
