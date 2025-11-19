@@ -13,11 +13,12 @@ void ExactTrieSearch(Trie& trie, const string& input)
 		return;
 	}
 
+	int i = 1;
 	for (Word* w : res)
 	{
-		cout << "Romaji: " << w->getRomaji() << " ";
-		cout << "Kana: " << w->getKana() << endl;
-		cout << "Meaning: " << w->getEnDef() << endl << endl;
+		cout << i << ") ";
+		w->displayWord();
+		i++;
 	}
 }
 
@@ -31,10 +32,11 @@ void PrefixTrieSearch(Trie& trie, const string& input)
 		return;
 	}
 
+	int i = 1;
 	for (Word* w : res)
 	{
-		cout << "Romaji: " << w->getRomaji() << " ";
-		cout << "Kana: " << w->getKana() << endl;
-		cout << "Meaning: " << w->getEnDef() << endl << endl;
+		cout << i << ") ";
+		w->displayWord();
+		i++;
 	}
 }
