@@ -16,7 +16,7 @@ void BPlusTree::insert(Word* word) {
     }
 
     // if root is full, split
-    if (root->keys.size() == 2 * t - 1) {
+    if (root->keys.size() == static_cast<size_t>(2 * t - 1)) { // changed to size_t instead of int
         Node* newRoot = new Node(false);
         newRoot->children.push_back(root);
         splitChild(newRoot, 0, root);
@@ -35,7 +35,7 @@ std::vector<Word*> BPlusTree::prefixSearch(const std::string& prefix) {
 Word* BPlusTree::exactSearch(const std::string& key) {
     Node* current = root;
     while (current != nullptr) {
-        int i = 0;
+        size_t i = 0; // changed to size_t instead of int
         while (i < current->keys.size() && key > current->keys[i]) {
             i++;
         }
@@ -68,7 +68,7 @@ void BPlusTree::insertNonFull(Node* node, const std::string& key, Word* word) {
     i++; // child index to descend
 
     // if child is full, split
-    if(node->children[i]->keys.size() == 2 * t - 1) {
+    if(node->children[i]->keys.size() == static_cast<size_t>(2 * t - 1)) {
         splitChild(node, i, node->children[i]);
         // after split, decide which child to descend
         if (key > node->keys[i]) {
@@ -126,7 +126,7 @@ std::vector<Word*> BPlusTree::rangeSearch(const std::string& lower, const std::s
 
     // traverse to the appropriate leaf node
     while (curr && !curr->isLeaf) {
-        int i = 0;
+        size_t i = 0; // changed to size_t instead of int
         while (i < curr->keys.size() && lower >= curr->keys[i]) {
             i++;
         }
@@ -135,7 +135,7 @@ std::vector<Word*> BPlusTree::rangeSearch(const std::string& lower, const std::s
 
     // traverse leaf nodes and collect results
     while (curr) {
-        for (int i = 0; i < curr->keys.size(); i++) {
+        for (size_t i = 0; i < curr->keys.size(); i++) { // changed to size_t instead of int
             if (curr->keys[i] >= lower && curr->keys[i] < upper) {
                 result.push_back(curr->values[i]);
             } else if (curr->keys[i] >= upper) {
