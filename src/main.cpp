@@ -8,6 +8,7 @@
 #include <string>
 #include <iostream>
 #include <codecvt>
+#include "SimpleTimer.h"
 #include "Word.h"
 #include "Menu.h"
 #include "Trie.h"
@@ -100,10 +101,12 @@ int main()
         }
         else if (choice == "1")
         {
+            SimpleTimer timer; // starts time
             PrefixTrieSearch(trie, search);
         }
         else if (choice == "2")
         {
+            SimpleTimer timer; // starts time
             PrefixBPlusTreeSearch(bptree, search);
         }
         else
