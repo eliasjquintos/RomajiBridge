@@ -11,11 +11,15 @@
 #include "Word.h"
 #include "Menu.h"
 #include "Trie.h"
+#include "BPlusTree.h"
 //#include "json.hpp"
 //TODO Get words into csv file
 //Insert words into trie
 //include Menu
 //search trie
+
+// UPDATED TODO insert words into B+ tree
+// search B+ tree
 
 //using json = nlohmann::json;
 using namespace std;
@@ -44,6 +48,9 @@ int main()
     //make trie from csv
     Trie trie;
 
+    //make B+ tree from csv
+    BPlusTree bptree(70); // degree 70 allows max 139 entries per node; shallow tree -> faster prefix search
+
     //TODO: Make searchable from the menu
     bool loading = true;
     bool searching = true;
@@ -59,10 +66,24 @@ int main()
                 getline(dict, romaji);
                 Word* w = new Word(kana, def, romaji);
                 trie.Insert(w);
+                bptree.insert(w);
             }
             loading = false;
             dict.close();
             cout << "Dictionary loaded successfully!" << endl;  
+        }
+
+        cout << "Choose search mode: \n";
+        cout << "1) Trie Prefix Search\n";
+        cout << "2) B+ Tree Prefix Search\n";
+        cout << "q) Quit\n";
+        cout << "Enter choice: " << endl;
+
+        string choice;
+        getline(cin, choice);
+        if (choice == "q") {
+            searching = false;
+            continue;
         }
 
         cout << "Enter your search or enter q to quit: " << endl;
@@ -77,9 +98,17 @@ int main()
         {
             searching = false;
         }
-        else
+        else if (choice == "1")
         {
             PrefixTrieSearch(trie, search);
+        }
+        else if (choice == "2")
+        {
+            PrefixBPlusTreeSearch(bptree, search);
+        }
+        else
+        {
+            cout << "Invalid choice. Please try again." << endl;
         }
     }
     return 0;    
