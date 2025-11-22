@@ -1,3 +1,7 @@
+/*
+	Credits to Professor Fox who provided us this class for a previous project in COP5303C
+*/
+
 #pragma once
 #include <chrono>
 
