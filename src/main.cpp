@@ -75,8 +75,8 @@ int main()
         }
 
         cout << "Choose search mode: \n";
-        cout << "1) Trie Prefix Search\n";
-        cout << "2) B+ Tree Prefix Search\n";
+        cout << "1) Exact Search\n";
+        cout << "2) Prefix Search\n";
         cout << "q) Quit\n";
         cout << "Enter choice: " << endl;
 
@@ -101,17 +101,51 @@ int main()
         }
         else if (choice == "1")
         {
-            SimpleTimer timer; // starts time
-            PrefixTrieSearch(trie, search);
+            cout << "Search with...\n";
+            cout << "A) Trie\n";
+            cout << "B) B+ Tree\n";
+
+            string method;
+            getline(cin, method);
+            
+            if (method == "A")
+            {
+                SimpleTimer timer; // starts time
+                ExactTrieSearch(trie, search);
+            }
+            else if (method == "B")
+            {
+                SimpleTimer timer; // starts time
+                ExactBPlusTreeSearch(bptree, search);
+            }
+            else
+            {
+                cout << "Invalid choice. Please try again." << endl;
+            }
         }
         else if (choice == "2")
         {
-            SimpleTimer timer; // starts time
-            PrefixBPlusTreeSearch(bptree, search);
-        }
-        else
-        {
-            cout << "Invalid choice. Please try again." << endl;
+            cout << "Search with...\n";
+            cout << "A) Trie\n";
+            cout << "B) B+ Tree\n";
+
+            string method;
+            getline(cin, method);
+
+            if (choice == "A")
+            {
+                SimpleTimer timer; // starts time
+                PrefixTrieSearch(trie, search);
+            }
+            else if (choice == "B")
+            {
+                SimpleTimer timer; // starts time
+                PrefixBPlusTreeSearch(bptree, search);
+            }
+            else
+            {
+                cout << "Invalid choice. Please try again." << endl;
+            }
         }
     }
     return 0;    
