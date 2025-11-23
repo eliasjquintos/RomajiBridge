@@ -74,6 +74,9 @@ int main()
             cout << "Dictionary loaded successfully!" << endl;  
         }
 
+        // menu layout
+        // prompt for search type -> prompt for method type -> ask for input 
+        // first, prompt for search type
         cout << "Choose search mode: \n";
         cout << "1) Exact Search\n";
         cout << "2) Prefix Search\n";
@@ -87,9 +90,33 @@ int main()
             continue;
         }
 
+        // added in input validation for search type 
+        if (choice != "1" && choice != "2")
+        {
+            cout << "Invalid choice. Please try again." << endl;
+            continue;
+        }
+
+        // next, prompt for method type (data structure)
+        cout << "Search with...\n";
+        cout << "A) Trie\n";
+        cout << "B) B+ Tree\n";
+
+        string method;
+        getline(cin, method);
+
+        // added in input validation for method type
+        if (method != "A" && method != "B")
+        {
+            cout << "Invalid choice. Please try again." << endl;
+            continue;
+        }
+
+        // finally, ask for input
         cout << "Enter your search or enter q to quit: " << endl;
         string search;
         getline(cin, search);
+
         if (search.empty())
         {
             cout << "Input cannot be empty. Please enter a valid romaji string." << endl;
@@ -99,15 +126,8 @@ int main()
         {
             searching = false;
         }
-        else if (choice == "1")
-        {
-            cout << "Search with...\n";
-            cout << "A) Trie\n";
-            cout << "B) B+ Tree\n";
-
-            string method;
-            getline(cin, method);
-            
+        else if (choice == "1") 
+        { 
             if (method == "A")
             {
                 SimpleTimer timer; // starts time
@@ -118,20 +138,9 @@ int main()
                 SimpleTimer timer; // starts time
                 ExactBPlusTreeSearch(bptree, search);
             }
-            else
-            {
-                cout << "Invalid choice. Please try again." << endl;
-            }
         }
         else if (choice == "2")
         {
-            cout << "Search with...\n";
-            cout << "A) Trie\n";
-            cout << "B) B+ Tree\n";
-
-            string method;
-            getline(cin, method);
-
             if (choice == "A")
             {
                 SimpleTimer timer; // starts time
@@ -141,10 +150,6 @@ int main()
             {
                 SimpleTimer timer; // starts time
                 PrefixBPlusTreeSearch(bptree, search);
-            }
-            else
-            {
-                cout << "Invalid choice. Please try again." << endl;
             }
         }
     }
