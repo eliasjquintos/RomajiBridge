@@ -1,11 +1,12 @@
 This is our Project 3 for COP3530.
-It's a romaji->JP dictionary.
+It's a prefix-searching dictionary for Japanese learners. 
 
 Starting the program:
-Navigate to the project3 directory via your terminal.
-If you're using Linux, you should be able to link everything with the "make" command. Not sure yet for Windows.
+Navigate to the "project3" directory via your terminal.
+If using Linux, link everything compile everything with "make".
 
 Housekeeping:
-All dependencies should be put inside the src folder and regularly pushed to the main branch on github. The one exception is the dictionary json, which is too big. Extract the json into a /data folder.
+All dependencies should be put inside the src folder and regularly pushed to the main branch on github. The one exception is the dictionary json, which is too big and should be kept in a /data folder on your local machine.
+Update: The program now reads from one csv file, dict.csv.
 
 -Elias
