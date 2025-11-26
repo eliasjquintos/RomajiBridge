@@ -76,6 +76,7 @@ int main()
 
         // menu layout
         // prompt for search type -> prompt for method type -> ask for input 
+        cout << "----------------- Romaji Bridge Main Menu -----------------" << endl;
         // first, prompt for search type
         cout << "Choose search mode: \n";
         cout << "1) Exact Search\n";
@@ -86,6 +87,8 @@ int main()
         string choice;
         getline(cin, choice);
         if (choice == "q") {
+            cout << "Thank you for using our dictionary. Goodbye!" << endl;
+            cout << "Credits: マシュー, キントス, & マリア" << endl;
             searching = false;
             continue;
         }
@@ -124,6 +127,8 @@ int main()
         }
         else if (search == "q")
         {
+            cout << "Thank you for using our dictionary. Goodbye!" << endl;
+            cout << "Credits: マシュー, キントス, & マリア" << endl;
             searching = false;
         }
         else if (choice == "1") 
@@ -247,3 +252,4 @@ for (int i = 0; i < 213984; i++)
     }
 }
 */
+
