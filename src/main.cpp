@@ -147,12 +147,12 @@ int main()
         }
         else if (choice == "2")
         {
-            if (choice == "A")
+            if (method == "A")
             {
                 SimpleTimer timer; // starts time
                 PrefixTrieSearch(trie, search);
             }
-            else if (choice == "B")
+            else if (method == "B")
             {
                 SimpleTimer timer; // starts time
                 PrefixBPlusTreeSearch(bptree, search);
