@@ -104,6 +104,7 @@ int main()
         cout << "Search with...\n";
         cout << "A) Trie\n";
         cout << "B) B+ Tree\n";
+        cout << "Enter choice: " << endl;
 
         string method;
         getline(cin, method);
