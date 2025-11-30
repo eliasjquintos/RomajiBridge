@@ -110,7 +110,7 @@ int main()
         getline(cin, method);
 
         // added in input validation for method type
-        if (method != "A" && method != "B")
+        if (method != "A" && method != "a" && method != "B" && method != "b") // accepts upper and lowercase inputs
         {
             cout << "Invalid choice. Please try again." << endl;
             continue;
@@ -134,12 +134,12 @@ int main()
         }
         else if (choice == "1") 
         { 
-            if (method == "A")
+            if (method == "A" || method == "a") 
             {
                 SimpleTimer timer; // starts time
                 ExactTrieSearch(trie, search);
             }
-            else if (method == "B")
+            else if (method == "B" || method == "b")
             {
                 SimpleTimer timer; // starts time
                 ExactBPlusTreeSearch(bptree, search);
@@ -147,12 +147,12 @@ int main()
         }
         else if (choice == "2")
         {
-            if (method == "A")
+            if (method == "A" || method == "a")
             {
                 SimpleTimer timer; // starts time
                 PrefixTrieSearch(trie, search);
             }
-            else if (method == "B")
+            else if (method == "B" || method == "b")
             {
                 SimpleTimer timer; // starts time
                 PrefixBPlusTreeSearch(bptree, search);
