@@ -86,7 +86,7 @@ int main()
 
         string choice;
         getline(cin, choice);
-        if (choice == "q") {
+        if (choice == "Q" || choice == "q") {
             cout << "Thank you for using our dictionary. Goodbye!" << endl;
             cout << "Credits: マシュー, キントス, & マリア" << endl;
             searching = false;
@@ -126,7 +126,7 @@ int main()
             cout << "Input cannot be empty. Please enter a valid romaji string." << endl;
             continue;
         }
-        else if (search == "q")
+        else if (search == "Q" || search == "q")
         {
             cout << "Thank you for using our dictionary. Goodbye!" << endl;
             cout << "Credits: マシュー, キントス, & マリア" << endl;
