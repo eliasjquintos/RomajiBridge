@@ -53,18 +53,18 @@ std::vector<Word*> BPlusTree::prefixSearch(const std::string& prefix) {
     return rangeSearch(lower, upper);
 }
 
-Word* BPlusTree::exactSearch(const std::string& key) {
+std::vector<Word*> BPlusTree::exactSearch(const std::string& key) {
     Node* current = root;
     while (current != nullptr) {
         size_t i = 0; // changed to size_t instead of int
         while (i < current->keys.size() && key > current->keys[i]) {
             i++;
         }
-        if(i < current->keys.size() && key == current->keys[i]) {return current->values[i].empty() ? nullptr : current->values[i][0];} // value found
-        if (current->isLeaf) {return nullptr;} // reached leaf node, not found
+        if(i < current->keys.size() && key == current->keys[i]) {return current->values[i]; } // value found
+        if (current->isLeaf) {return {}; } // reached leaf node, not found
         current = current->children[i];
     }
-    return nullptr; // not found
+    return {}; // not found
 }
 
 /*======== Helper Functions ========*/
@@ -78,7 +78,7 @@ void BPlusTree::insertNonFull(Node* node, const std::string& key, Word* word) {
         // insert key and value
         // if key already exists, append to values vector
         if (it != node->keys.end() && *it == key) {
-            node->values[ind - 1].push_back(word);
+            node->values[ind].push_back(word);
         } 
         
         // otherwise, insert new key and value into new vector
@@ -110,29 +110,41 @@ void BPlusTree::insertNonFull(Node* node, const std::string& key, Word* word) {
     insertNonFull(node->children[i], key, word);
 }
 
+// fixed to accomodate for new vector of Word* in leaf nodes
 void BPlusTree::splitChild(Node* parent, int ind, Node* child) {
     Node* newChild = new Node(child->isLeaf);
 
-    // insert new child pointer into parent
+    // insert new child into parent's children vector
     parent->children.insert(parent->children.begin() + ind + 1, newChild);
-    parent->keys.insert(parent->keys.begin() + ind, child->keys[t - 1]);
-
-    // move keys and values to new child
-    newChild->keys.assign(child->keys.begin() + t, child->keys.end());
-    child->keys.resize(t - 1);
 
     // if leaf, move values
     if (child->isLeaf) {
+        // leaf node split
+        newChild->keys.assign(child->keys.begin() + t, child->keys.end());
         newChild->values.assign(child->values.begin() + t, child->values.end());
-        child->values.resize(t - 1);
 
-        // update leaf node links
+        // adjust
+        child->keys.resize(t);
+        child->values.resize(t);
+
+        // update linked list of leaves
         newChild->next = child->next;
         child->next = newChild;
+
+        // promote the first key of the new child to the parent
+        parent->keys.insert(parent->keys.begin() + ind, newChild->keys[0]);
     } else {
-        // if internal, move children pointers
+        // if internal, promote middle key
+        std::string midKey = child->keys[t - 1];
+        newChild->keys.assign(child->keys.begin() + t, child->keys.end());
         newChild->children.assign(child->children.begin() + t, child->children.end());
+
+        // adjust
+        child->keys.resize(t - 1);
         child->children.resize(t);
+
+        // insert middle key to parent
+        parent->keys.insert(parent->keys.begin() + ind, midKey);
     }
 }
 
