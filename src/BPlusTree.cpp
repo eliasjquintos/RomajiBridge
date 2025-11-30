@@ -11,7 +11,7 @@ void BPlusTree::insert(Word* word) {
     if (root == nullptr) {
         root = new Node(true);
         root->keys.push_back(key);
-        root->values.push_back(word);
+        root->values.push_back({ word }); // handle duplicate keys by appending to vector
         return;
     }
 
@@ -39,7 +39,7 @@ Word* BPlusTree::exactSearch(const std::string& key) {
         while (i < current->keys.size() && key > current->keys[i]) {
             i++;
         }
-        if(i < current->keys.size() && key == current->keys[i]) {return current->values[i];} // value found
+        if(i < current->keys.size() && key == current->keys[i]) {return current->values[i].empty() ? nullptr : current->values[i][0];} // value found
         if (current->isLeaf) {return nullptr;} // reached leaf node, not found
         current = current->children[i];
     }
@@ -51,12 +51,21 @@ void BPlusTree::insertNonFull(Node* node, const std::string& key, Word* word) {
     // case 1: leaf node
     if (node->isLeaf) {
         // find position to insert
-        auto it = std::upper_bound(node->keys.begin(), node->keys.end(), key);
+        auto it = std::lower_bound(node->keys.begin(), node->keys.end(), key); // lower_bound for sorted insert
         int ind = it - node->keys.begin();
 
         // insert key and value
-        node->keys.insert(it, key);
-        node->values.insert(node->values.begin() + ind, word);
+        // if key already exists, append to values vector
+        if (it != node->keys.end() && *it == key) {
+            node->values[ind - 1].push_back(word);
+        } 
+        
+        // otherwise, insert new key and value into new vector
+        else {
+            node->keys.insert(it, key);
+            node->values.insert(node->values.begin() + ind, { word });
+        }
+
         return;
     }
 
@@ -136,10 +145,17 @@ std::vector<Word*> BPlusTree::rangeSearch(const std::string& lower, const std::s
     // traverse leaf nodes and collect results
     while (curr) {
         for (size_t i = 0; i < curr->keys.size(); i++) { // changed to size_t instead of int
-            if (curr->keys[i] >= lower && curr->keys[i] < upper) {
-                result.push_back(curr->values[i]);
-            } else if (curr->keys[i] >= upper) {
+            
+            // if results surpass the upper bound
+            if (curr->keys[i] >= upper) {
                 return result;
+            } 
+            
+            // if key is within range
+            if (curr->keys[i] >= lower) {
+                for (Word* w : curr->values[i]) {
+                    result.push_back(w); // NOW handles multiple Word* for duplicate keys
+                }
             }
         }
         curr = curr->next;
