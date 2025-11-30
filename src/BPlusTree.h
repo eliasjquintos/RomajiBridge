@@ -36,7 +36,7 @@ public:
     /*======== Operations ========*/
     void insert(Word* word); // insert a word into the B+ tree
     std::vector<Word*> prefixSearch(const std::string& prefix); // search for words with a given romaji prefix
-    Word* exactSearch(const std::string& key); // search for a word with an exact romaji match
+    std::vector<Word*> exactSearch(const std::string& key); // search for a word with an exact romaji match
 
 private: 
     void freeNode(Node* node) {
