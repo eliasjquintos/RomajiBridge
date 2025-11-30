@@ -3,6 +3,27 @@
 #include "BPlusTree.h"
 #include "Word.h"
 
+/* Description: B+ Tree Implementation with C++
+ * Author: Geeks for Geeks
+ * Date: 07/23/2025
+ * URL: https://www.geeksforgeeks.org/cpp/cpp-program-to-implement-b-plus-tree/
+ *
+ * Credits to this article for helping me understand proper implementation of B+ tree.
+ * The code was referenced in order to fit the needs of this project, such as performing exact search and prefix search.
+ *
+*/
+
+
+/* Description: Insertion in a B+ Tree
+ * Author: Geeks for Geeks
+ * Date: 07/15/2025
+ * URL: https://www.geeksforgeeks.org/dsa/insertion-in-a-b-tree/
+ *
+ * Credits to this article for helping me understand how to insert keys with multiple values in a B+ tree.
+ * The code was referenced in order to fit the needs of this project, specifically with the insert, insertNonFull, exactSearch, splitChild, and rangeSearch functions.
+ *
+*/
+
 /*======== Operations ========*/
 void BPlusTree::insert(Word* word) {
     std::string key = word->getRomaji();
