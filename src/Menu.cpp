@@ -51,16 +51,25 @@ void PrefixTrieSearch(Trie& trie, const string& input)
 /*====== B+ Tree ======*/
 void ExactBPlusTreeSearch(BPlusTree& bptree, const string& input)
 {
-	Word* res = bptree.exactSearch(input);
+	std::vector<Word*> res = bptree.exactSearch(input); // now, will return a vector of Word*
 
-	if (res == nullptr)
+	if (res.empty())
 	{
 		cout << "No exact match found" << endl;
 		return;
 	}
 
 	cout << "------------------------------------------------------------" << endl;
-	res->displayWord();
+	
+	int i = 1;
+	for (Word* w : res)
+	{
+		cout << i << ") ";
+		w->displayWord();
+		cout << "------------------------------------------------------------" << endl;
+		i++;
+	}
+
 	cout << "------------------------------------------------------------" << endl;
 }
 
