@@ -1,12 +1,14 @@
 This is our Project 3 for COP3530.
 It's a prefix-searching dictionary for Japanese learners. 
+It implements a trie and B+ tree and utilizes the simple timer application provided in Programming 2.
 
 Starting the program:
-Navigate to the "project3" directory via your terminal.
-If using Linux, link everything compile everything with "make".
+Navigate to the project directory via your terminal.
+If using Linux, link everything with "make".
+On Windows, run the following command (which can also be found in the Makefile): 
+g++ -Wall ./src/main.cpp ./src/Trie.cpp ./src/BPlusTree.cpp ./src/Menu.cpp ./src/SimpleTimer.cpp -o RomajiBridge
 
 Housekeeping:
-All dependencies should be put inside the src folder and regularly pushed to the main branch on github. The one exception is the dictionary json, which is too big and should be kept in a /data folder on your local machine.
-Update: The program now reads from one csv file, dict.csv.
+All dependencies should be put inside the src folder and regularly pushed to the main branch on Github.
 
 -Elias
